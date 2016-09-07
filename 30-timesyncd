@@ -1,0 +1,18 @@
+#!/bin/sh
+
+INTERFACE="${1}"
+STATUS="${2}"
+
+case "${STATUS}" in
+	up|dhcp4-change)
+		if [ -n "${DHCP4_NTP_SERVERS}" ]; then
+			mkdir -p /run/systemd/timesyncd.conf.d/
+			echo "[Time]" > /run/systemd/timesyncd.conf.d/${INTERFACE}.conf
+			echo "NTP = ${DHCP4_NTP_SERVERS}" >> /run/systemd/timesyncd.conf.d/${INTERFACE}.conf
+		fi
+		;;
+	down)
+		rm -f /run/systemd/timesyncd.conf.d/${INTERFACE}.conf
+		;;
+esac
+
