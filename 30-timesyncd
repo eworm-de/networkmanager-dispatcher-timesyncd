@@ -9,6 +9,7 @@ case "${STATUS}" in
 			mkdir -p /run/systemd/timesyncd.conf.d/
 			echo "[Time]" > /run/systemd/timesyncd.conf.d/${INTERFACE}.conf
 			echo "NTP = ${DHCP4_NTP_SERVERS}" >> /run/systemd/timesyncd.conf.d/${INTERFACE}.conf
+			timedatectl set-ntp true
 		fi
 		;;
 	down)
