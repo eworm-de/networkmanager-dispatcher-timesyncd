@@ -7,8 +7,12 @@ case "${STATUS}" in
 	up|dhcp4-change)
 		if [ -n "${DHCP4_NTP_SERVERS}" ]; then
 			mkdir -p /run/systemd/timesyncd.conf.d/
-			echo "[Time]" > /run/systemd/timesyncd.conf.d/${INTERFACE}.conf
+
+			echo -e "# generated for interface ${INTERFACE} by networkmanager-dispatcher-timesyncd\n" \
+				> /run/systemd/timesyncd.conf.d/${INTERFACE}.conf
+			echo "[Time]" >> /run/systemd/timesyncd.conf.d/${INTERFACE}.conf
 			echo "NTP = ${DHCP4_NTP_SERVERS}" >> /run/systemd/timesyncd.conf.d/${INTERFACE}.conf
+
 			timedatectl set-ntp true
 		fi
 		;;
