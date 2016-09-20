@@ -13,7 +13,10 @@ case "${STATUS}" in
 			echo "[Time]" >> /run/systemd/timesyncd.conf.d/${INTERFACE}.conf
 			echo "NTP = ${DHCP4_NTP_SERVERS}" >> /run/systemd/timesyncd.conf.d/${INTERFACE}.conf
 
-			timedatectl set-ntp true
+			# systemd-timesyncd does not notice changed configuration. So if it is
+			# already running 'timedatectl set-ntp true' does not work.
+			# Restart the service instead.
+			systemctl restart systemd-timesyncd.service
 		fi
 		;;
 	down)
